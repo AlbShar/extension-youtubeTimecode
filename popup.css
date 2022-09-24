@@ -1,6 +1,8 @@
-.title {
+.title-extension {
     font: 600 1rem 'Arial';
     text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
 .body {

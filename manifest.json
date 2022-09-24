@@ -24,7 +24,7 @@
         "matches": ["https://*.youtube.com/*"]
       }
     ],
-    "action": {
+    "action": { 
       "default_icon": {
         "16": "assets/ext-icon.png",
         "24": "assets/ext-icon.png",

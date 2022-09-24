@@ -2,15 +2,6 @@
      let youtubeLeftControls, youtubePlayer;
      let currentVideo = '';
      let currentVideoBookmarks = [];
-     let nameVideo = '';
-     /*
-     window.addEventListener("DOMContentLoaded", () => {
-        nameVideo = document.querySelector("#title > h1 > yt-formatted-string").textContent;
-     });
-          chrome.runtime.sendMessage(nameVideo);
-    */
-
-    
 
     // convert seconds to hh:mm:ss
     const getTime = t => {
@@ -79,5 +70,6 @@
 
      newVideoLoaded();
 
+     
  })();
 
