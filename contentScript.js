@@ -48,8 +48,9 @@
             createTimecodeBtn.src = chrome.runtime.getURL("assets/bookmark.png");
             createTimecodeBtn.classList.add('ytp-button', 'bookmark-btn');
             createTimecodeBtn.style.filter = 'brightness(0) invert(1)';
-            createTimecodeBtn.style.width = '50px';
-            createTimecodeBtn.style.height = '50px';
+            createTimecodeBtn.style.width = '46px';
+            createTimecodeBtn.style.height = '46px';
+            createTimecodeBtn.style.padding = '0px';
 
             rightControlYtb.prepend(createTimecodeBtn);
             createTimecodeBtn.addEventListener('click', addNewTimecodeEventHandler);
