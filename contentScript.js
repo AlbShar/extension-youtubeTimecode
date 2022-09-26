@@ -65,6 +65,8 @@
          if (type === "NEW") {
              currentVideo = videoId;
             newVideoLoaded();
+         } else if (type === "PLAY") {
+            document.querySelector('.video-stream').currentTime = value;
          }
      }); 
 
