@@ -7,7 +7,7 @@ const addNewBookmark = (bookmark) => {
         <span class="list-item__info timecode ">${bookmark.formatTime}</span>
         <div class="list-item__info time-description" data-timestamp="${bookmark.time}">${bookmark.desc}</div>
         <div class="list-item__info buttons">
-            <img src="./assets/Copy.png" alt="Копировать таймкод и его описание" class="buttons__item copy">
+            <img id="copyBtn" src="./assets/Copy.png" alt="Копировать таймкод и его описание" class="buttons__item copy">
             <img id="deleteBtn" src="./assets/Delete (2).png" alt="Удалить таймкод" class="buttons__item delete">
             <img id="playBtn" src="./assets/ok.png" alt="Перейти по таймкоду" class="buttons__item set">
         </div>
@@ -42,16 +42,32 @@ const onPlay = async (e) => {
     });
 };
 
-const onDelete = (e) => {
+const copyTimecode = (e) => {
+    let copyText = e.target.closest('.list-item').querySelector('.timecode').textContent + ' - ' + e.target.closest('.list-item__info').previousElementSibling.textContent;
+
+    navigator.clipboard.writeText(copyText).then(function(copyText) {
+        alert('Copying to clipboard was successful!');
+      }, function(err) {
+        console.log('Async: Could not copy text: ', err);
+      });
+
+};
+
+const onDelete = async (e) => {
+    const activeTab = await getActiveTabURL();
+    const bookmarkTime = e.target.closest('.list-item__info').previousElementSibling.getAttribute('data-timestamp');
+
     e.target.closest('.list-item').remove();
+    chrome.tabs.sendMessage(activeTab.id, {
+        type: "DELETE",
+        value: bookmarkTime
+    }, viewBookmarks)
 };
 
 const setTitleExtension = (nameVideo) => {
     document.querySelector("body > div > h1").textContent = 
     `Таймкоды для видео: '${(nameVideo.length > 18) ? nameVideo.slice(0,18) + '...' : nameVideo}'`;
 };
-
-const setBookmarkAttributes =  () => {};
 
 document.addEventListener("DOMContentLoaded", async (e) => {
     const activeTab = await getActiveTabURL();
@@ -83,7 +99,8 @@ body.addEventListener('click', (e) => {
         onDelete(e);
     } else if (e.target.id === 'playBtn') {
         onPlay(e);
+    } else if (e.target.id === 'copyBtn') {
+        copyTimecode(e);
     }
 })
 
-// https://youtu.be/0n809nd4Zu4?t=3511 - отсюда начать, удалить элементы из currentVideoBookmarks?? в onDelete
