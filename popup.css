@@ -2,7 +2,7 @@
     font: 600 1rem 'Arial';
     text-align: center;
     margin: 0;
-    padding: 0;
+    padding: 0 0 5px 0;
 }
 
 .body {
@@ -23,7 +23,7 @@
 }
 
 .list-item, .list-item_message {
-    padding: 5px 4px 5px 10px;
+    padding: 0px 4px 10px 10px;
 }
 
 .buttons__item {

@@ -2,6 +2,8 @@
      let youtubeLeftControls, youtubePlayer;
      let currentVideo = '';
      let currentVideoBookmarks = [];
+     const rightControlYtb = document.querySelector('.ytp-right-controls');
+
 
     // convert seconds to hh:mm:ss
     const getTime = t => {
@@ -19,8 +21,9 @@
         });
     };
 
+
     const addNewTimecodeEventHandler = async () => {
-        const descriptionTimecode = prompt('Введите описание таймкода', 'Таймкод №1');
+        const descriptionTimecode = prompt('Введите описание таймкода', `Описание таймкода`);
         const currentTime = document.querySelector('.video-stream').currentTime;
         const newBookmark = {
             time: currentTime,
@@ -35,15 +38,12 @@
         });
     };
 
-    
-
     // createTimecodeBtn on  right control panel of Youtube video
     const newVideoLoaded = async () => {
         currentVideoBookmarks = await fetchBookmarks();
 
         if (!document.querySelector(".bookmark-btn")) {
             const createTimecodeBtn = document.createElement('img');
-            const rightControlYtb = document.querySelector('.ytp-right-controls');
             createTimecodeBtn.src = chrome.runtime.getURL("assets/bookmark.png");
             createTimecodeBtn.classList.add('ytp-button', 'bookmark-btn');
             createTimecodeBtn.style.filter = 'brightness(0) invert(1)';
@@ -75,13 +75,9 @@
             document.querySelector("#placeholder-area").click();
             document.querySelector("#contenteditable-root").textContent = '';
             document.querySelector("#contenteditable-root").textContent = `${value}`;
-
         }
      }); 
 
-
      newVideoLoaded();
-
-     
  })();
 

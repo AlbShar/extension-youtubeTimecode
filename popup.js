@@ -9,7 +9,7 @@ const addNewBookmark = (bookmark) => {
         <div class="list-item__info time-description" data-timestamp="${bookmark.time}">${bookmark.desc}</div>
         <div class="list-item__info buttons">
             <img id="copyBtn" src="./assets/Copy.png" alt="Копировать таймкод и его описание" class="buttons__item copy">
-            <img id="deleteBtn" src="./assets/Delete (2).png" alt="Удалить таймкод" class="buttons__item delete">
+            <img id="deleteBtn" src="./assets/delete.png" alt="Удалить таймкод" class="buttons__item delete">
             <img id="playBtn" src="./assets/ok.png" alt="Перейти по таймкоду" class="buttons__item set">
         </div>
     </li>`;
