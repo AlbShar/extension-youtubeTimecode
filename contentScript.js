@@ -11,7 +11,7 @@
         return date.toISOString().substr(11,8);
     };
 
-    const fetchBookmarks = () => {
+    const fetchBookmarks = async () => {
         return new Promise(resolve => {
             chrome.storage.sync.get([currentVideo], obj => {
                 resolve(obj[currentVideo] ? JSON.parse(obj[currentVideo]) : []);
@@ -33,7 +33,6 @@
         chrome.storage.sync.set({
             [currentVideo]: JSON.stringify([...currentVideoBookmarks, newBookmark].sort((a,b) => a.time - b.time))
         });
-        // console.log(newBookmark);
     };
 
     
@@ -72,7 +71,12 @@
              chrome.storage.sync.set({[currentVideo]: JSON.stringify(currentVideoBookmarks)});
 
              response(currentVideoBookmarks);
-         }
+         } else if (type === "POST") {
+            document.querySelector("#placeholder-area").click();
+            document.querySelector("#contenteditable-root").textContent = '';
+            document.querySelector("#contenteditable-root").textContent = `${value}`;
+
+        }
      }); 
 
 

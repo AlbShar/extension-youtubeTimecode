@@ -1,5 +1,6 @@
 import {getActiveTabURL} from "./utils.js";
 const body = document.querySelector('.body');
+const footer = document.querySelector('.footer');
 
 const addNewBookmark = (bookmark) => {
     return `
@@ -11,10 +12,16 @@ const addNewBookmark = (bookmark) => {
             <img id="deleteBtn" src="./assets/Delete (2).png" alt="Удалить таймкод" class="buttons__item delete">
             <img id="playBtn" src="./assets/ok.png" alt="Перейти по таймкоду" class="buttons__item set">
         </div>
-    </li>
-    `
+    </li>`;
 };
 
+const addFooterButtons = () => {
+    return `
+    <div class="footer__buttons buttons-footer">
+        <button class="buttons-footer__copy-all" id="copyallBtn">Copy Timecodes</button>
+        <button class="buttons-footer__post-all" id="postallBtn">Insert in Comment</button>
+    </div>`;
+};
 
 const viewBookmarks = (currentBookmarks = []) => {
     const bookmarksElement = document.querySelector('.list');
@@ -26,8 +33,12 @@ const viewBookmarks = (currentBookmarks = []) => {
             bookmarksElement.insertAdjacentHTML('beforeend', addNewBookmark(bookmark));
         }
     } else {
-        bookmarksElement.innerHTML = '<li class="list-item"> No bookmarks to show</li>'
+        bookmarksElement.innerHTML = '<li class="list-item_message"> No bookmarks to show</li>';
     }
+
+    if (document.querySelectorAll('.list-item').length > 0 && !document.querySelector('.buttons-footer')) {
+        footer.insertAdjacentHTML('beforeend', addFooterButtons());
+    } 
 };
 
 const onPlay = async (e) => {
@@ -53,15 +64,62 @@ const copyTimecode = (e) => {
 
 };
 
+const copyAllTimecode = () => {
+    const listItem = document.querySelectorAll('.list-item');
+    const listTimecodes = {};
+    let listTimecodesText = '';
+
+    listItem.forEach((item, index, array) => {
+        listTimecodes[item.querySelector('.timecode').textContent] = item.querySelector('.time-description').textContent;
+    });
+    console.log(listTimecodes);
+    
+    for (let time in listTimecodes) {
+        listTimecodesText += `${time} - ${listTimecodes[time]} \n`;
+    }
+
+    console.log(listTimecodesText);
+    navigator.clipboard.writeText(listTimecodesText).then(function(copyText) {
+        alert('Copying to clipboard was successful!');
+      }, function(err) {
+        console.log('Async: Could not copy text: ', err);
+      });
+
+};
+
+const postAllTimecode = async () => {
+    const listItem = document.querySelectorAll('.list-item');
+    const listTimecodes = {};
+    let listTimecodesText = '';
+
+    listItem.forEach((item, index, array) => {
+        listTimecodes[item.querySelector('.timecode').textContent] = item.querySelector('.time-description').textContent;
+    });
+    
+    for (let time in listTimecodes) {
+        listTimecodesText += `${time} - ${listTimecodes[time]} \n`;
+    }
+    const activeTab = await getActiveTabURL();
+    chrome.tabs.sendMessage(activeTab.id, {
+        type: "POST",
+        value: listTimecodesText
+    });
+    
+};
+
 const onDelete = async (e) => {
     const activeTab = await getActiveTabURL();
     const bookmarkTime = e.target.closest('.list-item__info').previousElementSibling.getAttribute('data-timestamp');
+
+    if (document.querySelectorAll('.list-item').length === 0) {
+        document.querySelector('.buttons-footer').remove();
+    }
 
     e.target.closest('.list-item').remove();
     chrome.tabs.sendMessage(activeTab.id, {
         type: "DELETE",
         value: bookmarkTime
-    }, viewBookmarks)
+    }, viewBookmarks);
 };
 
 const setTitleExtension = (nameVideo) => {
@@ -83,15 +141,12 @@ document.addEventListener("DOMContentLoaded", async (e) => {
             currentVideoBookmarks = data[currentVideo] ? JSON.parse(data[currentVideo]) : [];
             console.log(currentVideoBookmarks);
             viewBookmarks(currentVideoBookmarks);
-        })
+        });
 
-        
-        
     } else {
         const body = document.querySelector('.body');
         body.innerHTML = "<h1 class='title-extension'> This is not Youtube page. </h1>";
     }
-
 });
 
 body.addEventListener('click', (e) => {
@@ -101,6 +156,10 @@ body.addEventListener('click', (e) => {
         onPlay(e);
     } else if (e.target.id === 'copyBtn') {
         copyTimecode(e);
+    } else if (e.target.id === 'copyallBtn') {
+        copyAllTimecode();
+    } else if (e.target.id === 'postallBtn') {
+        postAllTimecode();
     }
-})
+});
 

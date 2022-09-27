@@ -22,7 +22,7 @@
     align-items: center;
 }
 
-.list-item {
+.list-item, .list-item_message {
     padding: 5px 4px 5px 10px;
 }
 
@@ -48,3 +48,12 @@
 }
 
 
+.buttons-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttons-footer__copy-all {
+    margin-right: 20px;
+}
