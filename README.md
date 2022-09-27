@@ -5,7 +5,8 @@ The browser extension for streams on Youtube, which allows create timecodes and 
 
 ## Preview
 
-![Gif](https://github.com/AlbShar/ubereats/blob/master/gifs/preview.gif)
+![Gif]()
+
 ## How to use the extension
 1. Download the extension.
 2. Turn on Developer mode in your Google Chrome browser (Extensions tab).
