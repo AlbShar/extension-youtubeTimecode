@@ -5,7 +5,7 @@ The browser extension for streams on Youtube, which allows create timecodes and 
 
 ## Preview
 
-![Gif]()
+![Gif](https://github.com/AlbShar/extension-youtubeTimecode/blob/master/preview_file.gif)
 
 ## How to use the extension
 1. Download the extension.
